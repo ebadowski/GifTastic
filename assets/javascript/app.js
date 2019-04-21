@@ -5,9 +5,9 @@ addButtons(gifList);
 
 
 
-// add buttons
-// for loop through an array
+
 function addButtons(arr) {
+  $('#buttons').empty();
   //do not modify array in this
   for (var i = 0; i < arr.length; i++) {
     $('<button>', {
@@ -19,77 +19,59 @@ function addButtons(arr) {
 }
 
 
-// update page only through top button click
-$('.gif-button').on('click', function () {
-  //ajax call
+$(document).on("click", '.gif-button', function() {
 
+  //using key from previous activities
+  var queryURL = 'https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=10';
+
+  queryURL += '&q=' + $(this).attr('id');
+
+  $.ajax({
+    url: queryURL,
+    method: 'GET'
+  }).then(function (response) {
+    var results = response.data;
+    console.log(results);
+    for (var i = 0; i < results.length; i++){
+      var rating = results[i].rating;
+      var imageUrl = results[i].images.fixed_height_small_still.url; 
+      //var gifDiv = $("<div>");
+      //gifDiv.attr('id', 'gif-container').prependTo('#gifs');
+      $('<img>', {
+        src: imageUrl,
+        alt: 'cat image',
+        class: 'gif',
+        'data-animate': results[i].images.fixed_height_small.url, 
+        'data-still': results[i].images.fixed_height_small_still.url,
+        'data-state': 'still'
+      }).prependTo('#gifs')
+        //}).prependTo(gifDiv);
+      //$('<p>').text('Rating: ' + rating).appendTo(gifDiv)
+    }
+  });
+});
+
+//pausing gifs
+$(document).on('click', '.gif', function() {
+  var state = $(this).attr('data-state');
+  if (state === 'still') {
+    $(this).attr('src', $(this).attr('data-animate'));
+    $(this).attr('data-state', 'animate');
+  } else {
+    $(this).attr('src', $(this).attr('data-still'));
+    $(this).attr('data-state', 'still');
+  }
 });
 
 
-// add gifs to the body
-// should call of click of header button and submit click
-function getAjax() {
-
-}
-function addGifs() {
-  getAjax();
-  var queryURL = 'https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC';
-//   // using key from previous activities
-//   var queryURL = 'https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC';
-  //   var searchTerm = $('#gif-search').val().trim();
-  //   searchTerm.replace(/ /g, '_'); //replaces internal spaces with '_'
-  //   // adds search to api link
-  //   queryURL += '&tag=' + searchTerm;
-  //   // Perfoming an AJAX GET request to our queryURL
-  //   $.ajax({
-  //     url: queryURL,
-  //     method: 'GET'
-  //   }).then(function(response) {
-  //       var imageUrl = response.data.image_original_url;
-
-        // $('<img>', {
-        //   src: imageUrl,
-        //   alt: 'cat image',
-        //   animate: 'STUFF',
-        //   still: 'STUFF',
-        //   state: 'still'
-        // }).prependTo('#gifs';)
-
-}
-
-
-
-// adds button to top of page
-$('#add-giff').on('click', function () {
+//adds button to top of page
+$('#add-gif').on('click', function () {
   event.preventDefault();
-
+  var searchTerm = $('#gif-search').val().trim();
+  searchTerm.replace(/ /g, '_'); //replaces internal spaces with '_'
+  gifList.push(searchTerm);
+console.log(gifList);
+  addButtons(gifList);
 });
 
 
-
-
-//   // using key from previous activities
-//   var queryURL = 'https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC';
-
-//   var searchTerm = $('#gif-search').val().trim();
-//   searchTerm.replace(/ /g, '_'); //replaces internal spaces with '_'
-//   // adds search to api link
-//   queryURL += '&tag=' + searchTerm;
-//   // Perfoming an AJAX GET request to our queryURL
-//   $.ajax({
-//     url: queryURL,
-//     method: 'GET'
-//   }).then(function(response) {
-//       var imageUrl = response.data.image_original_url;
-//       //Make button stuff
-
-//       // // Creating and storing an image tag
-//       // var catImage = $('<img>');
-
-//       // // Setting the catImage src attribute to imageUrl
-//       // catImage.attr('src', imageUrl);
-//       // catImage.attr('alt', 'cat image');
-
-//       // // Prepending the catImage to the images div
-//       // $('#images').prepend(catImage);
-//     });

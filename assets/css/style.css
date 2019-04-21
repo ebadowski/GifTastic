@@ -1,0 +1,33 @@
+/* header */
+#buttons{
+    width: 100%;
+}
+
+#container{
+    width: 100%;
+}
+
+/* gif body */ 
+#gifs{
+    width:80%;
+    margin-right: 0;
+}
+#gif-container{
+    position: relative;
+    max-width: 250px;
+    margin: 0;
+    float: left;
+}
+
+/* sidebar */
+#side-panel{
+   
+    position: relative;
+
+    width: 19%;
+    min-width: 100px;
+    float: right;
+}
+#gif-search{
+    width: 90%;
+}
